@@ -17,10 +17,16 @@ namespace c__imtahan_Ya_Allah
         public int Age { get; set; }
         public List<Cv>? Sv { get; set; }
         public List<Vakansiya>? Vakansiyas { get; set; }
-        
-       
+        public List<Natfication>? notfications { get; set; }
+        public Employer()
+        {
+            Vakansiyas = new();
+            notfications = new();
+            Sv = new();
+        }
+
         public Employer(int ıd, string? name, string? surname, string? pasword,
-            string? seher, string? phone, int age, List<Cv>? sv, List<Vakansiya>? vakansiyas)
+            string? seher, string? phone, int age)
         {
             Id = ıd;
             Name = name;
@@ -29,8 +35,9 @@ namespace c__imtahan_Ya_Allah
             Seher = seher;
             Phone = phone;
             Age = age;
-            Sv = sv;
-            Vakansiyas = vakansiyas;
+            Sv = new();
+            Vakansiyas = new();
+            notfications = new();
         }
         public override string ToString()
         {

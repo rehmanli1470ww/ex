@@ -20,9 +20,13 @@ namespace c__imtahan_Ya_Allah
         public int Age { get; set; }
         public List<Cv> ?Sv { get; set; }
         public List<Natfication> notfications { get; set; }
-
+        public Worker()
+        {
+            notfications = new();
+            Sv = new();
+        }
         public Worker(int ıd, string? name, string? surname, string? pasword,
-            string? seher, string? phone, int age, List<Cv> sv)
+            string? seher, string? phone, int age)
         {
             Id = ıd;
             Name = name;
@@ -31,7 +35,8 @@ namespace c__imtahan_Ya_Allah
             Seher = seher;
             Phone = phone;
             Age = age;
-            Sv=sv;  
+            Sv = new();
+            notfications = new();
         }
         public override string ToString()
         {

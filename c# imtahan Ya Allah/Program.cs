@@ -1,61 +1,267 @@
 ﻿using System;
 using System.Data;
+using System.Security.Principal;
+using System.Text.Json;
 
 namespace c__imtahan_Ya_Allah
 {
     public class Program
     {
-        static void Workers(List<Worker> vorker)
+        static void fillData()
         {
-            string ?sec;
+            if (File.Exists("workers.json"))
+            {
+                var data = File.ReadAllText("workers.json");
+                Database.workers = JsonSerializer.Deserialize<List<Worker>>(data);
+            }
+            if (File.Exists("employers.json"))
+            {
+                var data = File.ReadAllText("employers.json");
+                Database.employers = JsonSerializer.Deserialize<List<Employer>>(data);
+            }
+        }
+        static void LogInWorker()
+        {
+            Console.Write("name: ");
+            string name = Console.ReadLine();
+            Console.Write("nsurame: ");
+            string password = Console.ReadLine();
+            foreach (var item in Database.workers)
+            {
+                if (name == item.Name && password == item.Pasword)
+                {
+                Start:
+                    Console.WriteLine("1 - notfications\n2 - show all vacanies\n3 - filtered vacannies\n4 - exit");
+                    int choice = int.Parse(Console.ReadLine());
+                    if (choice == 1)
+                    {
+                        foreach (var worker in item.notfications)
+                            Console.WriteLine(item);
+                        Console.ReadKey();
+                        goto Start;
+                    }
+                    if (choice == 2)
+                    {
+                        foreach (var em in Database.employers)
+                            foreach (var vc in em.Vakansiyas)
+                                Console.WriteLine(vc);
+                        Console.WriteLine("1 - REQUEST\n 2 - GO TO BACK");
+                        choice = int.Parse(Console.ReadLine());
+                        switch (choice)
+                        {
+                            case 1:
+                                Console.WriteLine("enter id of vc");
+                                choice = int.Parse(Console.ReadLine());
+                                foreach (var em in Database.employers)
+                                    foreach (var vc in em.Vakansiyas)
+                                    {
+                                        if (vc.Id == choice)
+                                        {
+                                            em.notfications.Add(new Natfication(item.Name, "request", DateTime.Now));
+                                            File.WriteAllText("employers.json", JsonSerializer.Serialize(Database.employers, new JsonSerializerOptions() { WriteIndented = true }));
+                                        }
+                                    }
+                                break;
+                            case 2: goto Start;
+                        }
+                    }
+                    if (choice == 3)
+                    {
+                        Console.WriteLine("programming \nIT\nDesign\n\nenter full name of profession");
+                        string profession = Console.ReadLine();
+                        foreach (var em in Database.employers)
+                            foreach (var vc in em.Vakansiyas)
+                            {
+                                if (vc.IsName == profession)
+                                    Console.WriteLine(vc);
+                            }
+                        Console.WriteLine("1 - REQUEST\n 2 - GO TO BACK");
+                        choice = int.Parse(Console.ReadLine());
+                        switch (choice)
+                        {
+                            case 1:
+                                Console.WriteLine("enter id of vc");
+                                choice = int.Parse(Console.ReadLine());
+                                foreach (var em in Database.employers)
+                                    foreach (var vc in em.Vakansiyas)
+                                    {
+                                        if (vc.Id == choice)
+                                        {
+                                            em.notfications.Add(new Natfication(item.Name, "request", DateTime.Now));
+                                            File.WriteAllText("employers.json", JsonSerializer.Serialize(Database.employers, new JsonSerializerOptions() { WriteIndented = true }));
+                                        }
+                                    }
+                                break;
+                            case 2: goto Start;
+                        }
+                    }
+                    else { Workers(); }
+                }
+            }
+        }
+        static void LogInemployer()
+        {
+            string name = Console.ReadLine();
+            string password = Console.ReadLine();
+            foreach (var item in Database.employers)
+            {
+                if (name == item.Name && password == item.Pasword)
+                {
+                Start:
+                    Console.WriteLine("1 - notfications\n2 - show all cv\n3 - filtered cv\n4 - exit");
+                    int choice = int.Parse(Console.ReadLine());
+                    if (choice == 1)
+                    {
+                        foreach (var worker in item.notfications)
+                            Console.WriteLine(item);
+                        Console.ReadKey();
+                        goto Start;
+                    }
+                    if (choice == 2)
+                    {
+                        foreach (var em in Database.workers)
+                            foreach (var vc in em.Sv)
+                                Console.WriteLine(vc);
+                        Console.WriteLine("1 - REQUEST\n 2 - GO TO BACK");
+                        choice = int.Parse(Console.ReadLine());
+                        switch (choice)
+                        {
+                            case 1:
+                                Console.WriteLine("enter id of vc");
+                                choice = int.Parse(Console.ReadLine());
+                                foreach (var em in Database.employers)
+                                    foreach (var vc in em.Vakansiyas)
+                                    {
+                                        if (vc.Id == choice)
+                                        {
+                                            em.notfications.Add(new Natfication(item.Name, "invited", DateTime.Now));
+                                            File.WriteAllText("workers.json", JsonSerializer.Serialize(Database.workers, new JsonSerializerOptions() { WriteIndented = true }));
+                                        }
+                                    }
+                                break;
+                            case 2: goto Start;
+                        }
+                    }
+                    if (choice == 3)
+                    {
+                        Console.WriteLine("programming \nIT\nDesign\n\nenter full name of profession");
+                        string profession = Console.ReadLine();
+                        foreach (var em in Database.workers)
+                            foreach (var vc in em.Sv)
+                            {
+                                if (vc.Ixtisas == profession)
+                                    Console.WriteLine(vc);
+                            }
+                        Console.WriteLine("1 - REQUEST\n 2 - GO TO BACK");
+                        choice = int.Parse(Console.ReadLine());
+                        switch (choice)
+                        {
+                            case 1:
+                                Console.WriteLine("enter id of vc");
+                                choice = int.Parse(Console.ReadLine());
+                                foreach (var em in Database.workers)
+                                    foreach (var vc in em.Sv)
+                                    {
+                                        if (vc.Id == choice)
+                                        {
+                                            em.notfications.Add(new Natfication(item.Name, "invited", DateTime.Now));
+                                            File.WriteAllText("workers.json", JsonSerializer.Serialize(Database.workers, new JsonSerializerOptions() { WriteIndented = true }));
+                                        }
+                                    }
+                                break;
+                            case 2: goto Start;
+                        }
+                    }
+                    else { Employers(); }
+                }
+            }
+        }
+        static void Registrationworker()
+        {
+
+            Worker wk = new Worker();
+            Console.Write("iD");
+            wk.Id = int.Parse(Console.ReadLine());
+            Console.Write("name");
+            wk.Name = (Console.ReadLine());
+            Console.Write("surname");
+            wk.Surname = (Console.ReadLine());
+            Console.Write("seher");
+            wk.Seher = (Console.ReadLine());
+            Console.Write("password");
+            wk.Pasword = (Console.ReadLine());
+            Console.Write("phone");
+            wk.Phone = (Console.ReadLine());
+            Console.Write("age");
+            wk.Age = int.Parse(Console.ReadLine());
+            Console.WriteLine("is successfully");
+            Database.workers.Add(wk);
+            File.WriteAllText("workers.json", JsonSerializer.Serialize(Database.workers, new JsonSerializerOptions() { WriteIndented = true }));
+            Workers();
+        }
+        static void Registrationemployer()
+        {
+            Employer em = new();
+            Console.Write("iD");
+            em.Id = int.Parse(Console.ReadLine());
+            Console.Write("name");
+            em.Name = (Console.ReadLine());
+            Console.Write("surname");
+            em.Surname = (Console.ReadLine());
+            Console.Write("seher");
+            em.Seher = (Console.ReadLine());
+            Console.Write("password");
+            em.Pasword = (Console.ReadLine());
+            Console.Write("phone");
+            em.Phone = (Console.ReadLine());
+            Console.Write("age");
+            em.Age = int.Parse(Console.ReadLine());
+            Console.WriteLine("is successfully");
+            Database.employers.Add(em);
+            File.WriteAllText("employers.json", JsonSerializer.Serialize(Database.employers, new JsonSerializerOptions() { WriteIndented = true }));
+            Employers();
+        }
+        static void Workers()
+        {
+            string? sec;
             Console.WriteLine("1 Login \n2 Registration");
-            sec=Console.ReadLine();
+            sec = Console.ReadLine();
             if (sec == "1")
             {
-                string ?namee;
-                string ?pasvord;
-                Console.WriteLine("Name daxil edin : ");
-                namee = Console.ReadLine();
-                Console.WriteLine("Paswordu daxil edin : ");
-                pasvord = Console.ReadLine();
-                foreach (var item in vorker)
-                {
-                    if (item.Name == namee&& item.Pasword== pasvord)
-                    {
-                        Console.WriteLine(item);
-                    }
-                }
+                LogInWorker();
             }
             else if (sec == "2")
             {
-                string ?id;
-                string? namee;
-                string? surnamee;
-                string? pasvord;
-                string? seher;
-                string? phone;
-                string? age;
-
-
+                Registrationworker();
             }
-            else 
-            {
-                Workers(vorker);
-            }
-            
-
+            else Workers();
         }
 
 
-        static void Start(List<Worker> workers,List<Vakansiya> vakansiyas)
+        static void Employers()
+        {
+            string? sec;
+            Console.Write("1 Login \n2 Registration\nenter choice: ");
+            sec = Console.ReadLine();
+            if (sec == "1")
+            {
+                LogInemployer();
+            }
+            else if (sec == "2")
+            {
+                Registrationemployer();
+            }
+            else Workers();
+        }
+        static void Start()
         {
             bool starts = true;
             int temp = 1;
-            Workers(workers);
 
 
             while (starts)
             {
+                Console.Clear();
                 if (temp == 1)
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
@@ -67,7 +273,7 @@ namespace c__imtahan_Ya_Allah
                 }
                 else if (temp == 2)
                 {
-                    
+
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(temp == 1 ? "-> Worker" : "   Worker");
@@ -75,30 +281,25 @@ namespace c__imtahan_Ya_Allah
                     Console.ForegroundColor = ConsoleColor.Black;
                     Console.WriteLine(temp == 2 ? "-> Employer" : "   Employer");
                     Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
-                
+
                 var key = Console.ReadKey();
 
                 switch (key.Key)
                 {
                     case ConsoleKey.Enter:
                         if (temp == 1)
-                        {
-                            Console.WriteLine("Salam 1");
-                            Thread.Sleep(1000);
-                        }
+                            Workers();
                         else if (temp == 2)
-                        {
-
-                        }
-
+                            Employers();
                         break;
                     case ConsoleKey.DownArrow:
                         if (temp == 1)
                         {
                             temp = 2;
                         }
-                        else if (temp==2)
+                        else if (temp == 2)
                         {
                             temp = 1;
                         }
@@ -114,57 +315,21 @@ namespace c__imtahan_Ya_Allah
                         }
                         break;
                     default: break;
-                    
-                    
+
+
                 }
             }
         }
         static void Main()
         {
-            Cv c1 = new Cv("Praqramis", "Steep it Academiya", 550, "Developer", "Steep", new DateTime(2001, 1, 2), "Pyton,C++,C#", "Var", "Var", "Var");
-            Cv c2 = new Cv("It", "Steep it Academiya", 600, "Sinior", "Steep", new DateTime(2004, 1, 2), "Microsoft,Azure ","Var", "Var", "Var");
-            Cv c3 = new Cv("Praqramis", "Code cademiya", 380, "Sinior Developer", "Code Academiya", new DateTime(2008, 1, 2), "Pyton,C++,C#", "Var", "Var", "Var");
-            Cv c4 = new Cv("It", "Code cademiya", 320, "Sinior Developer", "Code Academiya", new DateTime(2005, 1, 2), "Azure", "Var", "Var", "Var");
-
-            List<Cv> cvs = new List<Cv>();
-            cvs.Add(c1);
-            cvs.Add(c2);
-            cvs.Add(c3);
-            cvs.Add(c4);
-            
-            
-
-
-            Worker worker1 = new Worker(1,"Rubail", "Rehmanli", "1234","Qebele", "070 213 57 77",28,cvs);
-            
-            Worker worker2 = new Worker(2,"Mehemmed", "Hemzeyev","4321", "Quba", "050 873 66 78",16,cvs);
-            Worker worker3 = new Worker(3,"Pervin", "Agayev","2468", "Qobustan", "070 615 92 66",21,cvs);
-            
-            List<Worker> workers = new List<Worker>();
-            workers.Add(worker1);
-            workers.Add(worker2);
-            workers.Add(worker3);
-            //workers.ToString();
-            Vakansiya vakansiya1 = new Vakansiya(1, "Praqramis", "5", "1500");
-            Vakansiya vakansiya2 = new Vakansiya(2, "It", "5", "2300");
-            Vakansiya vakansiya3 = new Vakansiya(3, "Praqramis", "5", "5000");
-            List<Vakansiya> vakansiyas = new List<Vakansiya>();
-            vakansiyas.Add(vakansiya1);
-            vakansiyas.Add(vakansiya2);
-            vakansiyas.Add(vakansiya3);
-
-
-            Employer employer1 = new Employer(1, "Dasdi", "Dasdiyev","3214", "Qebele", "050 555 66 77", 32,cvs, vakansiyas);
-            Employer employer2 = new Employer(2, "Haci", "Haciyev", "3216", "Qusar", "050 666 66 77", 34, cvs, vakansiyas);
-            Employer employer3 = new Employer(3, "Eli", "Eliyev","3333", "Quba", "050 777 66 77", 31, cvs, vakansiyas);
 
 
 
-            bool start=true;
+            bool start = true;
             while (start)
             {
-                //Console.WriteLine(worker1.ToString());
-                Start(workers, vakansiyas);
+                fillData();
+                Start();
                 start = false;
             }
         }

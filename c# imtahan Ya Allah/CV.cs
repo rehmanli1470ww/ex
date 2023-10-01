@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace c__imtahan_Ya_Allah
 {
     public class Cv
     {
-
+        public int Id { get; set; }
         public string ?Ixtisas { get; set; }
         public string? OMekteb { get; set; }
         public int UQBali{ get; set; }
@@ -19,7 +20,7 @@ namespace c__imtahan_Ya_Allah
         public string ?FDiplomu { get; set; }
         public string ?GitLink { get; set; }
         public string ?Linkedin { get; set; }
-        public Cv(string? ıxtisas, string? oMekteb, int uQBali, string? bacariqlari, string? companies, DateTime ıBTarixi, string? bDiller, string fDiplomu, string gitLink, string linkedin)
+        public Cv(string? ıxtisas, string? oMekteb, int uQBali, string? bacariqlari, string? companies, DateTime ıBTarixi, string? bDiller, string fDiplomu, string gitLink, string linkedin, int id)
         {
             Ixtisas = ıxtisas;
             OMekteb = oMekteb;
@@ -31,10 +32,11 @@ namespace c__imtahan_Ya_Allah
             FDiplomu = fDiplomu;
             GitLink = gitLink;
             Linkedin = linkedin;
+            Id = id;
         }
         public override string ToString()
         {
-            return "Ixtisas : "+Ixtisas+"\nOxudugu Mekteb : "+ OMekteb+"\nUniye qebul bali : "+ UQBali
+            return "ID: "+Id+"\nIxtisas : "+Ixtisas+"\nOxudugu Mekteb : "+ OMekteb+"\nUniye qebul bali : "+ UQBali
                 + "\nBacariqlari : " + Bacariqlari+ "\nCompanies : " + Companies+ "\nIse baslama tarixi : " + IBTarixi+
                 "\nBildiyi diller : " + BDiller+ "\nFull diplomu : " + FDiplomu+ "\nGitLink : " + GitLink+ "\nLinkedin : " + Linkedin;
         }
