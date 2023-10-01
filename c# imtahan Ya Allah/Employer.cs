@@ -15,14 +15,12 @@ namespace c__imtahan_Ya_Allah
         public string? Seher { get; set; }
         public string? Phone { get; set; }
         public int Age { get; set; }
-        public List<Cv>? Sv { get; set; }
         public List<Vakansiya>? Vakansiyas { get; set; }
         public List<Natfication>? notfications { get; set; }
         public Employer()
         {
             Vakansiyas = new();
             notfications = new();
-            Sv = new();
         }
 
         public Employer(int ıd, string? name, string? surname, string? pasword,
@@ -35,7 +33,6 @@ namespace c__imtahan_Ya_Allah
             Seher = seher;
             Phone = phone;
             Age = age;
-            Sv = new();
             Vakansiyas = new();
             notfications = new();
         }

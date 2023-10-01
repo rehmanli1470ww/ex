@@ -13,7 +13,10 @@ namespace c__imtahan_Ya_Allah
         public string ?IsName{ get; set; }
         public string ?IsTecrubesi { get; set; }
         public string ?Maas { get; set; }
-
+        public Vakansiya()
+        {
+            
+        }
         public Vakansiya(int ıd, string? ısName, string? ısTecrubesi, string? maas)
         {
             Id = ıd;

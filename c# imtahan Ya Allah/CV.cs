@@ -11,34 +11,26 @@ namespace c__imtahan_Ya_Allah
     {
         public int Id { get; set; }
         public string ?Ixtisas { get; set; }
-        public string? OMekteb { get; set; }
         public int UQBali{ get; set; }
-        public string? Bacariqlari { get; set; }
-        public string? Companies { get; set; }
-        public DateTime IBTarixi { get; set; }
+        public DateTime yaratmatarixi { get; set; }
         public string? BDiller { get; set; }
-        public string ?FDiplomu { get; set; }
-        public string ?GitLink { get; set; }
-        public string ?Linkedin { get; set; }
-        public Cv(string? ıxtisas, string? oMekteb, int uQBali, string? bacariqlari, string? companies, DateTime ıBTarixi, string? bDiller, string fDiplomu, string gitLink, string linkedin, int id)
+
+        public Cv()
         {
-            Ixtisas = ıxtisas;
-            OMekteb = oMekteb;
-            UQBali = uQBali;
-            Bacariqlari = bacariqlari;
-            Companies = companies;
-            IBTarixi = ıBTarixi;
-            BDiller = bDiller;
-            FDiplomu = fDiplomu;
-            GitLink = gitLink;
-            Linkedin = linkedin;
+            
+        }
+
+        public Cv(int id, string? ixtisas, int uQBali, DateTime yaratmatarixi, string? bDiller)
+        {
             Id = id;
+            Ixtisas = ixtisas;
+            UQBali = uQBali;
+            this.yaratmatarixi = yaratmatarixi;
+            BDiller = bDiller;
         }
-        public override string ToString()
-        {
-            return "ID: "+Id+"\nIxtisas : "+Ixtisas+"\nOxudugu Mekteb : "+ OMekteb+"\nUniye qebul bali : "+ UQBali
-                + "\nBacariqlari : " + Bacariqlari+ "\nCompanies : " + Companies+ "\nIse baslama tarixi : " + IBTarixi+
-                "\nBildiyi diller : " + BDiller+ "\nFull diplomu : " + FDiplomu+ "\nGitLink : " + GitLink+ "\nLinkedin : " + Linkedin;
-        }
+
+        public override string ToString() => "ID: " + Id + "\nIxtisas : " + Ixtisas + "\nUniye qebul bali : " + UQBali
+                + "\nIse baslama tarixi : " + yaratmatarixi +
+                "\nBildiyi diller : " + BDiller;
     }
 }

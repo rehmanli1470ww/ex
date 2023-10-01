@@ -22,26 +22,39 @@ namespace c__imtahan_Ya_Allah
         }
         static void LogInWorker()
         {
+            Console.Clear();
             Console.Write("name: ");
             string name = Console.ReadLine();
-            Console.Write("nsurame: ");
+            Console.Write("password: ");
             string password = Console.ReadLine();
             foreach (var item in Database.workers)
             {
                 if (name == item.Name && password == item.Pasword)
                 {
                 Start:
-                    Console.WriteLine("1 - notfications\n2 - show all vacanies\n3 - filtered vacannies\n4 - exit");
-                    int choice = int.Parse(Console.ReadLine());
+                    Console.Clear();
+                    Console.WriteLine("1 - notfications\n2 - show all vacanies\n3 - filtered vacannies\n4 - creat a new cv\n5 - exit");
+                    int choice = 0;
+                    try
+                    {
+                        choice= int.Parse(Console.ReadLine());
+
+                    }
+                    catch (Exception)
+                    {
+
+                        goto Start;
+                    }
                     if (choice == 1)
                     {
-                        foreach (var worker in item.notfications)
-                            Console.WriteLine(item);
+                        foreach (var node in item.notfications)
+                            Console.WriteLine(node);
                         Console.ReadKey();
                         goto Start;
                     }
                     if (choice == 2)
                     {
+                        Console.Clear();
                         foreach (var em in Database.employers)
                             foreach (var vc in em.Vakansiyas)
                                 Console.WriteLine(vc);
@@ -67,6 +80,7 @@ namespace c__imtahan_Ya_Allah
                     }
                     if (choice == 3)
                     {
+                        Console.Clear();
                         Console.WriteLine("programming \nIT\nDesign\n\nenter full name of profession");
                         string profession = Console.ReadLine();
                         foreach (var em in Database.employers)
@@ -94,31 +108,74 @@ namespace c__imtahan_Ya_Allah
                                 break;
                             case 2: goto Start;
                         }
+
                     }
-                    else { Workers(); }
+                    if (choice == 4)
+                    {
+                        Console.Clear();
+                        Cv cv = new();
+                    error:
+                        Console.Write("enter vc id: ");
+                        try
+                        {
+                            cv.Id = int.Parse(Console.ReadLine());
+
+                        }
+                        catch (Exception)
+                        {
+                            goto error;
+                        }
+                        Console.WriteLine("programming \nIT\nDesign\n\nenter full name of profession");
+                        cv.Ixtisas = Console.ReadLine();
+                    error2:
+                        Console.Write("enter uniye qebul bal: ");
+                        try
+                        {
+                            cv.UQBali = int.Parse(Console.ReadLine());
+                        }
+                        catch (Exception)
+                        {
+                            goto error2;
+                        }
+                        Console.Write("enter bildiyin diller: ");
+                        cv.BDiller = (Console.ReadLine());
+                        cv.yaratmatarixi = DateTime.Now;
+                        item.Sv.Add(cv);
+                        File.WriteAllText("workers.json", JsonSerializer.Serialize(Database.workers, new JsonSerializerOptions() { WriteIndented = true }));
+                        goto Start;
+                    }
+                    else
+                    {
+                        Workers();
+                    }
                 }
             }
         }
         static void LogInemployer()
         {
+            Console.Clear();
+            Console.Write("enter name: ");
             string name = Console.ReadLine();
+            Console.Write("enter password: ");
             string password = Console.ReadLine();
             foreach (var item in Database.employers)
             {
                 if (name == item.Name && password == item.Pasword)
                 {
                 Start:
-                    Console.WriteLine("1 - notfications\n2 - show all cv\n3 - filtered cv\n4 - exit");
+                    Console.Clear();
+                    Console.WriteLine("1 - notfications\n2 - show all cv\n3 - filtered cv\n4 - creat a new vacancs\n5 - exit");
                     int choice = int.Parse(Console.ReadLine());
                     if (choice == 1)
                     {
-                        foreach (var worker in item.notfications)
-                            Console.WriteLine(item);
+                        foreach (var node in item.notfications)
+                            Console.WriteLine(node);
                         Console.ReadKey();
                         goto Start;
                     }
                     if (choice == 2)
                     {
+                        Console.Clear();
                         foreach (var em in Database.workers)
                             foreach (var vc in em.Sv)
                                 Console.WriteLine(vc);
@@ -129,8 +186,8 @@ namespace c__imtahan_Ya_Allah
                             case 1:
                                 Console.WriteLine("enter id of vc");
                                 choice = int.Parse(Console.ReadLine());
-                                foreach (var em in Database.employers)
-                                    foreach (var vc in em.Vakansiyas)
+                                foreach (var em in Database.workers)
+                                    foreach (var vc in em.Sv)
                                     {
                                         if (vc.Id == choice)
                                         {
@@ -144,6 +201,7 @@ namespace c__imtahan_Ya_Allah
                     }
                     if (choice == 3)
                     {
+                        Console.Clear();
                         Console.WriteLine("programming \nIT\nDesign\n\nenter full name of profession");
                         string profession = Console.ReadLine();
                         foreach (var em in Database.workers)
@@ -172,28 +230,64 @@ namespace c__imtahan_Ya_Allah
                             case 2: goto Start;
                         }
                     }
+                    if (choice == 4)
+                    {
+                        Vakansiya vc = new();
+                        Console.Write("enter vc id: ");
+                        vc.Id = int.Parse(Console.ReadLine());
+                        Console.WriteLine("programming \nIT\nDesign\n\nenter full name of profession");
+                        vc.IsName = Console.ReadLine();
+                        Console.Write("enter salary: ");
+                        vc.Maas = (Console.ReadLine());
+                        Console.Write("enter work experence: ");
+                        vc.IsTecrubesi = (Console.ReadLine());
+                        item.Vakansiyas.Add(vc);
+                        File.WriteAllText("employers.json", JsonSerializer.Serialize(Database.employers, new JsonSerializerOptions() { WriteIndented = true }));
+                        goto Start;
+                    }
                     else { Employers(); }
                 }
             }
         }
         static void Registrationworker()
         {
+            Console.Clear();
 
             Worker wk = new Worker();
-            Console.Write("iD");
+            error:
+            Console.Write("iD: ");
+            try
+            {
+
             wk.Id = int.Parse(Console.ReadLine());
-            Console.Write("name");
+            }
+            catch (Exception)
+            {
+
+                goto error;
+            }
+            Console.Write("name: ");
             wk.Name = (Console.ReadLine());
-            Console.Write("surname");
+            Console.Write("surname: ");
             wk.Surname = (Console.ReadLine());
-            Console.Write("seher");
+            Console.Write("seher: ");
             wk.Seher = (Console.ReadLine());
-            Console.Write("password");
+            Console.Write("password: ");
             wk.Pasword = (Console.ReadLine());
-            Console.Write("phone");
+            Console.Write("phone: ");
             wk.Phone = (Console.ReadLine());
-            Console.Write("age");
+            error2:
+            Console.Write("age: ");
+            try
+            {
+
             wk.Age = int.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+
+                goto error2;
+            }
             Console.WriteLine("is successfully");
             Database.workers.Add(wk);
             File.WriteAllText("workers.json", JsonSerializer.Serialize(Database.workers, new JsonSerializerOptions() { WriteIndented = true }));
@@ -201,21 +295,43 @@ namespace c__imtahan_Ya_Allah
         }
         static void Registrationemployer()
         {
+            Console.Clear();
+
             Employer em = new();
-            Console.Write("iD");
+            error:
+            Console.Write("iD: ");
+            try
+            {
             em.Id = int.Parse(Console.ReadLine());
-            Console.Write("name");
+
+            }
+            catch (Exception)
+            {
+
+                goto error;
+            }
+            Console.Write("name: ");
             em.Name = (Console.ReadLine());
-            Console.Write("surname");
+            Console.Write("surname: ");
             em.Surname = (Console.ReadLine());
-            Console.Write("seher");
+            Console.Write("seher: ");
             em.Seher = (Console.ReadLine());
-            Console.Write("password");
+            Console.Write("password: ");
             em.Pasword = (Console.ReadLine());
-            Console.Write("phone");
+            Console.Write("phone: ");
             em.Phone = (Console.ReadLine());
-            Console.Write("age");
+            error2:
+            Console.Write("age: ");
+            try
+            {
             em.Age = int.Parse(Console.ReadLine());
+
+            }
+            catch (Exception)
+            {
+
+                goto error2;
+            }
             Console.WriteLine("is successfully");
             Database.employers.Add(em);
             File.WriteAllText("employers.json", JsonSerializer.Serialize(Database.employers, new JsonSerializerOptions() { WriteIndented = true }));
@@ -223,8 +339,10 @@ namespace c__imtahan_Ya_Allah
         }
         static void Workers()
         {
+            Console.Clear();
+
             string? sec;
-            Console.WriteLine("1 Login \n2 Registration");
+            Console.WriteLine("1 Login \n2 Registration\n3 - exit\nenter choice: ");
             sec = Console.ReadLine();
             if (sec == "1")
             {
@@ -234,14 +352,16 @@ namespace c__imtahan_Ya_Allah
             {
                 Registrationworker();
             }
-            else Workers();
+            else Start();
         }
 
 
         static void Employers()
         {
+            Console.Clear();
+
             string? sec;
-            Console.Write("1 Login \n2 Registration\nenter choice: ");
+            Console.Write("1 Login \n2 Registration\n3 - exit\nenter choice: ");
             sec = Console.ReadLine();
             if (sec == "1")
             {
@@ -251,7 +371,7 @@ namespace c__imtahan_Ya_Allah
             {
                 Registrationemployer();
             }
-            else Workers();
+            else Start();
         }
         static void Start()
         {
@@ -322,9 +442,6 @@ namespace c__imtahan_Ya_Allah
         }
         static void Main()
         {
-
-
-
             bool start = true;
             while (start)
             {
